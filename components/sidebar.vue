@@ -8,28 +8,33 @@
     </div>
     <div class="divider"></div>
     <ul>
-      <li>
-        <span class="h5"
-          ><b-icon icon="app-indicator" aria-hidden="true"></b-icon
-        ></span>
-        DASHBOARD
-      </li>
+      <NuxtLink to="/">
+        <li>
+          <span class="h5"
+            ><b-icon icon="app-indicator" aria-hidden="true"></b-icon
+          ></span>
+          DASHBOARD
+        </li>
+      </NuxtLink>
       <li v-b-toggle.collapse-weapons>
         <span class="h5"
           ><b-icon icon="app-indicator" aria-hidden="true"></b-icon></span
         >WEAPONS<b-icon icon="caret-down-fill" aria-hidden="true"></b-icon>
       </li>
       <b-collapse id="collapse-weapons" class="mt-2 collapsed">
-        <li>
-          <span class="h5"
-            ><b-icon icon="app-indicator" aria-hidden="true"></b-icon></span
-          >CRIAR
-        </li>
-        <li>
-          <span class="h5"
-            ><b-icon icon="app-indicator" aria-hidden="true"></b-icon></span
-          >Listar
-        </li>
+        <NuxtLink to="/weapons/create">
+          <li>
+            <span class="h5"
+              ><b-icon icon="app-indicator" aria-hidden="true"></b-icon></span
+            >CRIAR
+          </li></NuxtLink>
+        <NuxtLink to="/weapons/create">
+          <li>
+            <span class="h5"
+              ><b-icon icon="app-indicator" aria-hidden="true"></b-icon></span
+            >Listar
+          </li></NuxtLink
+        >
       </b-collapse>
       <li v-b-toggle.collapse-box>
         <span class="h5"
