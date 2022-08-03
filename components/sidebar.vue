@@ -27,8 +27,9 @@
             <span class="h5"
               ><b-icon icon="app-indicator" aria-hidden="true"></b-icon></span
             >CRIAR
-          </li></NuxtLink>
-        <NuxtLink to="/weapons/create">
+          </li></NuxtLink
+        >
+        <NuxtLink to="/weapons/list">
           <li>
             <span class="h5"
               ><b-icon icon="app-indicator" aria-hidden="true"></b-icon></span

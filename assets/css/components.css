@@ -5,10 +5,17 @@
   margin: 12px 0;
 }
 
+
 .box {
   padding: 24px 12px 16px 12px;
   background-color: #27293d;
   border-radius: 4px;
+  height: 100%;
+}
+
+.box-full{
+
+  min-height: 50vh;
 }
 
 .image-exiber {
@@ -24,7 +31,7 @@
   transform: scale(1.02);
 }
 
-button {
+.my-btn {
   min-width: 200px;
   min-height: 50px;
   background-color: #1e1e2e;
@@ -35,7 +42,44 @@ button {
   cursor: pointer;
   transition: 0.3s;
 }
-button:hover {
+.my-btn:hover {
   transform: scale(1.01);
   background-color: #1e1e2eb6;
+}
+.custom-file-input ~ .custom-file-label[data-browse]::after{
+  background-color: #1e1e2eb6 !important;
+  color: rgb(255, 255, 255) !important;
+  cursor: pointer;
+  height: 100%;
+}
+input {
+  color: rgba(255, 255, 255, 0.568) !important;
+  box-shadow: none !important;
+  border: none !important;
+  background-color: rgba(0, 0, 0, 0.466) !important;
+}
+input::placeholder {
+  color: rgba(255, 255, 255, 0.568) !important;
+}
+.custom-file-label{
+  color: rgba(255, 255, 255, 0.568) !important;
+  box-shadow: none !important;
+  border: none !important;
+  background-color: rgba(0, 0, 0, 0.466) !important;
+}
+.dropdown {
+  background-color: rgba(0, 0, 0, 0.466) !important;
+}
+.menu {
+  background-color: #151621 !important;
+}
+.menu::-webkit-scrollbar {
+  display: none;
+}
+.menu .item {
+  color: rgba(255, 255, 255, 0.568) !important;
+}
+.text {
+  color: rgba(255, 255, 255, 0.568) !important;
+  font-size: 16px;
 }

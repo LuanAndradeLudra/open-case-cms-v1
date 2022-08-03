@@ -1,29 +1,29 @@
+require("dotenv").config();
+
 export default {
   // Target: https://go.nuxtjs.dev/config-target
-  target: 'static',
+  target: "static",
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Open Case Cms',
+    title: "Open Case Cms",
     htmlAttrs: {
-      lang: 'en'
+      lang: "en",
     },
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
-      { name: 'format-detection', content: 'telephone=no' }
+      { charset: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { hid: "description", name: "description", content: "" },
+      { name: "format-detection", content: "telephone=no" },
     ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     "~/assets/css/main.css",
     "~/assets/css/colors.css",
-    "~/assets/css/components.css"
+    "~/assets/css/components.css",
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -37,21 +37,28 @@ export default {
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [
-  ],
+  buildModules: [],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/bootstrap
-    'bootstrap-vue/nuxt',
+    "bootstrap-vue/nuxt",
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios',
+    "@nuxtjs/axios",
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: '/',
+    baseURL: process.env.API_URL,
+    credentials: false
+  },
+
+  publicRuntimeConfig: {
+    env: {
+      apiUrl: process.env.API_URL,
+      storageUrl: process.env.API_STORAGE,
+    },
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -59,12 +66,12 @@ export default {
     build: {
       loaders: {
         sass: {
-          implementation: require('sass'),
+          implementation: require("sass"),
         },
         scss: {
-          implementation: require('sass'),
+          implementation: require("sass"),
         },
       },
-    }
-  }
-}
+    },
+  },
+};
