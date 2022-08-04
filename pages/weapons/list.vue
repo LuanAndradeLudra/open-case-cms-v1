@@ -30,7 +30,7 @@
         placeholder="Pesquise por um item"
       />
       <b-table
-        table-variant="secondary"
+        table-variant="dark"
         :busy="overlay"
         :items="items"
         :fields="fields"

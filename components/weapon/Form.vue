@@ -243,7 +243,7 @@ export default {
   },
   computed: {
     nameState() {
-      return validator.isLengthLessOrEqual(this.weapon.name, 3);
+      return validator.isNotEmpty(this.weapon.name);
     },
     imageState() {
       return validator.isNotEmpty(this.weapon.image);
