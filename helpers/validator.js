@@ -14,19 +14,26 @@ class Validator {
     else if (this.cleanPrice(value) < 0.1) return false;
     else return true;
   }
-  cleanPrice(value) {
-    let cleanValue = value.replaceAll("R$", "");
-    cleanValue = parseFloat(cleanValue);
-    return cleanValue;
-  }
   isRate(value) {
     if (this.cleanRate(value) === 0.0 || isNaN(this.cleanPrice(value)))
       return null;
-    else if (this.cleanPrice(value) <= 0) return false;
+    else if (this.cleanPrice(value) <= 0 || this.cleanPrice(value) > 100) return false;
+    else return true;
+  }
+  isDiscount(value) {
+    if (this.cleanRate(value) === 0.0 || isNaN(this.cleanPrice(value)))
+      return null;
+    else if (this.cleanPrice(value) <= 0 || this.cleanPrice(value) > 99) return false;
     else return true;
   }
   cleanRate(value) {
     let cleanValue = value.replaceAll("%", "").replaceAll(" ", "");
+    cleanValue = parseFloat(cleanValue);
+    return cleanValue;
+  }
+  
+  cleanPrice(value) {
+    let cleanValue = value.replaceAll("R$", "");
     cleanValue = parseFloat(cleanValue);
     return cleanValue;
   }
