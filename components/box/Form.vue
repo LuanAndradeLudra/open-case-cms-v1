@@ -62,8 +62,9 @@
             <b-form-input
               id="input-drop"
               v-model="box.weapons[index].drop_rate"
+              :maxlength="8"
               placeholder="Digite a chance de drop"
-              @blur="recalculateDropRateTotal()"
+              @keyup="recalculateDropRateTotal()"
               v-money="masks.rate"
             ></b-form-input>
           </b-col>
@@ -71,7 +72,7 @@
             style="position: absolute; top: 45; right: 20; cursor: pointer"
             icon="trash-fill"
             aria-hidden="true"
-            @click="removeWeapon(index)"
+            @click="box.weapons.splice(index, 1)"
           ></b-icon>
         </b-row>
         <b-row class="mt-4">
@@ -86,10 +87,19 @@
               @change="onFileChange"
             ></b-form-file>
             <button
+              v-if="editingId === ''"
               class="my-btn mt-4 btn-block"
               @click="loading ? null : create()"
             >
               <span v-if="!loading">Salvar</span>
+              <b-spinner v-else variant="secondary"></b-spinner>
+            </button>
+            <button
+              v-else
+              class="my-btn mt-4 btn-block"
+              @click="loading ? null : update()"
+            >
+              <span v-if="!loading">Atualizar</span>
               <b-spinner v-else variant="secondary"></b-spinner>
             </button>
           </b-col>
@@ -126,6 +136,7 @@ export default {
       weapons: [],
       drop_rate_box_total: 100,
       imageUrl: "",
+      editingId: "",
       box: {
         name: "",
         price: "",
@@ -147,6 +158,7 @@ export default {
   },
   created() {
     this.loadWeapons();
+    this.loadData();
   },
   computed: {
     nameState() {

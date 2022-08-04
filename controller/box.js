@@ -1,4 +1,37 @@
+const validator = require("~/helpers/validator");
 class Box {
+  async loadData() {
+    if (this.$route.query.box) {
+      try {
+        const response = await this.$axios.get(
+          `/box/find/${this.$route.query.box}`
+        );
+        const box = response.data.data;
+        this.editingId = box._id;
+        this.box.name = box.name;
+        this.box.price = `R$ ${box.price.toFixed(2)}`;
+        if (box.discount) this.box.discount = `${box.discount} %`;
+        this.box.image = "same";
+        box.weapons.forEach((weaponItem) => {
+          this.box.weapons.push({
+            weapon: weaponItem.weapon._id,
+            drop_rate: `${weaponItem.drop_rate.toFixed(3)} %`,
+          });
+        });
+        this.imageUrl = `${this.$config.env.storageUrl}box/${box.image.preview}`;
+        this.recalculateDropRateTotal();
+        this.overlay = false;
+      } catch (e) {
+        this.$toast.open({
+          message: "Erro ao carregar dados!",
+          type: "error",
+          position: "top-right",
+          duration: 4000,
+        });
+      }
+    } else this.overlay = false;
+  }
+
   async loadWeapons() {
     try {
       const response = await this.$axios.get("/weapon/list");
@@ -18,65 +51,125 @@ class Box {
   async create() {
     if (this.validate()) {
       this.loading = true;
+      const formData = this.createPayload();
+      this.$axios
+        .post("box/create", formData)
+        .then(() => {
+          this.$toast.open({
+            message: "Nova boa criada com sucesso!",
+            type: "success",
+            position: "top-right",
+            duration: 4000,
+          });
+          this.$router.push("/box/list");
+        })
+        .catch((err) => {
+          this.loading = false;
+          this.errorToast(err ?? "Erro ao criar nova box!");
+        });
     }
+  }
+
+  async update() {
+    if (this.validate()) {
+      this.loading = true;
+      const formData = this.createPayload();
+      this.$axios
+        .put(`box/update/${this.editingId}`, formData)
+        .then(() => {
+          this.$toast.open({
+            message: "Box atualizada com sucesso!",
+            type: "success",
+            position: "top-right",
+            duration: 4000,
+          });
+          this.$router.push("/box/list");
+        })
+        .catch((err) => {
+          this.loading = false;
+          this.errorToast(err ?? "Erro ao atualizar box!");
+        });
+    }
+  }
+
+  createPayload() {
+    const formData = new FormData();
+    if (this.editingId) formData.append("id", this.editingId);
+    formData.append("name", this.box.name);
+    formData.append("price", this.box.price);
+    if (validator.isNotEmpty(validator.cleanRate(this.box.discount)))
+      formData.append("discount", this.box.discount);
+    formData.append("weapons", JSON.stringify(this.box.weapons));
+    if (this.box.image !== "same") formData.append("image", this.box.image);
+    return formData;
   }
 
   recalculateDropRateTotal() {
     this.drop_rate_box_total = 100;
     this.box.weapons.forEach((weapon) => {
-      this.drop_rate_box_total -= weapon.drop_rate
-        .replaceAll("%", "")
-        .replaceAll(" ", "");
+      this.drop_rate_box_total = (
+        this.drop_rate_box_total - validator.cleanRate(weapon.drop_rate)
+      ).toFixed(3);
     });
-    if (this.drop_rate_box_total < 0)
+    if (this.drop_rate_box_total < 0) {
+      this.$toast.clear();
       this.errorToast("A caixa excede o limite de chance de drop!");
-  }
-
-  removeWeapon(index) {
-    this.box.weapons.splice(index, 1);
+    }
   }
 
   validate() {
     this.$toast.clear();
     let next = true;
     let error = 0;
-    if (!this.nameState) {
+    function countError() {
       error++;
       next = false;
+    }
+    if (!this.nameState) {
+      countError();
       if (error < 5) this.errorToast("Preencha o nome!");
     }
     if (!this.priceState) {
-      error++;
-      next = false;
+      countError();
       if (error < 5) this.errorToast("Preencha o preço!");
     }
     if (!this.discountState && this.discountState !== null) {
-      error++;
-      next = false;
+      countError();
       if (error < 5) this.errorToast("Preencha corretamente o desconto!");
     }
-    this.box.weapons.forEach((item, index) => {
-      if (!validator.isNotEmpty(item.weapon)) {
-        error++;
-        next = false;
-        if (error < 5)
-          this.errorToast(`Preencha o nome corretamente no item ${index + 1}!`);
-      }
-      if (!validator.isNotEmpty(item.drop_rate)) {
-        error++;
-        next = false;
+    if (!this.box.image) {
+      countError();
+      if (error < 5) this.errorToast("Selecione uma imagem!");
+    }
+    if (this.box.weapons.length < 2) {
+      countError();
+      if (error < 5) this.errorToast(`A caixa precisa ter pelo menos 2 itens!`);
+    } else {
+      this.box.weapons.forEach((item, index) => {
+        if (!validator.isNotEmpty(item.weapon)) {
+          countError();
+          if (error < 5)
+            this.errorToast(
+              `Preencha o nome corretamente no item ${index + 1}!`
+            );
+        }
+        if (!validator.isRate(item.drop_rate)) {
+          countError();
+          if (error < 5)
+            this.errorToast(
+              `Preencha a chance de drop corretamente no item ${index + 1}!`
+            );
+        }
+      });
+      if (this.drop_rate_box_total > 0) {
+        countError();
         if (error < 5)
           this.errorToast(
-            `Preencha a chance de drop corretamente no item ${index + 1}!`
+            `A soma das chances de drop precisa ser igual a 100!`
           );
       }
-    });
-    if (this.drop_rate_box_total !== 0) {
-      error++;
-      next = false;
-      if (error < 5)
-        this.errorToast(`A soma das chances de drop precisa ser igual a 100!`);
     }
+
     return next;
   }
 }
@@ -87,6 +180,8 @@ module.exports = {
   loadWeapons: box.loadWeapons,
   create: box.create,
   recalculateDropRateTotal: box.recalculateDropRateTotal,
-  removeWeapon: box.removeWeapon,
   validate: box.validate,
+  createPayload: box.createPayload,
+  loadData: box.loadData,
+  update: box.update,
 };

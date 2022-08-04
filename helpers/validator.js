@@ -5,7 +5,7 @@ class Validator {
     else return true;
   }
   isNotEmpty(value) {
-    if (value === "" || value === null || value === undefined) return null;
+    if (value === "" || value === null || value === undefined || value === 0) return null;
     else return true;
   }
   isPrice(value) {
@@ -15,9 +15,9 @@ class Validator {
     else return true;
   }
   isRate(value) {
-    if (this.cleanRate(value) === 0.0 || isNaN(this.cleanPrice(value)))
+    if (this.cleanRate(value) === 0.0 || isNaN(this.cleanRate(value)))
       return null;
-    else if (this.cleanPrice(value) <= 0 || this.cleanPrice(value) > 100) return false;
+    else if (this.cleanRate(value) <= 0 || this.cleanRate(value) > 100) return false;
     else return true;
   }
   isDiscount(value) {
