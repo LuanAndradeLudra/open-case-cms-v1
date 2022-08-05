@@ -1,10 +1,12 @@
 <template>
   <div class="page-weapons-create">
     <b-overlay :show="overlay" rounded="sm" variant="transparent" blur="1px">
-      <div class="box">Criar nova caixa</div>
+      <div class="box">
+        <span v-if="!param">Criar</span> <span v-else>Editar</span> nova caixa
+      </div>
       <div class="box mt-3">
         <b-row>
-          <b-col cols="6">
+          <b-col xl="6" lg="12">
             <label for="input-name">Nome:</label>
             <b-form-input
               id="input-name"
@@ -13,7 +15,7 @@
               placeholder="Digite o nome"
             ></b-form-input>
           </b-col>
-          <b-col cols="3">
+          <b-col xl="3" lg="6">
             <label for="input-price">Preço:</label>
             <b-form-input
               id="input-price"
@@ -23,7 +25,7 @@
               v-money="masks.price"
             ></b-form-input>
           </b-col>
-          <b-col cols="3">
+          <b-col xl="3" lg="6">
             <label for="input-discount">Desconto:</label>
             <b-form-input
               id="input-discount"
@@ -42,30 +44,40 @@
             :options="categories"
           />
         </b-col>
-        <div class="d-flex align-items-center justify-content-between mt-4">
-          <span
-            >Quantidade de chance disponível {{ drop_rate_box_total }} %</span
-          >
-          <b-button @click="box.weapons.push({})"
-            ><b-icon icon="plus-circle" aria-hidden="true"></b-icon> Adicionar
-            item</b-button
-          >
-        </div>
+        <b-row class="mt-4">
+          <b-col sm="7">
+            Quantidade de chance disponível {{ drop_rate_box_total }} %
+          </b-col>
+          <b-col sm="5" class="d-flex justify-content-sm-end mt-3 mt-sm-0">
+            <b-button class="btn-block" @click="box.weapons.push({})"
+              ><b-icon icon="plus-circle" aria-hidden="true"></b-icon> Adicionar
+              item</b-button
+            >
+          </b-col>
+        </b-row>
         <b-row
           v-for="(_, index) in box.weapons"
           :key="index"
-          class="mt-3 align-items-center"
+          class="mt-4 mt-lg-3 align-items-center"
           style="position: relative"
         >
-          <b-col cols="9">
-            <label for="input-item">Item:</label>
+          <b-col xl="9" lg="7">
+            <label for="input-item"
+              >Item:
+              <b-icon
+                class="ml-4 cursor-pointer"
+                icon="trash-fill"
+                aria-hidden="true"
+                @click="box.weapons.splice(index, 1)"
+              ></b-icon
+            ></label>
             <model-select
               id="input-item"
               v-model="box.weapons[index].weapon"
               :options="weapons"
             />
           </b-col>
-          <b-col cols="3 pr-5">
+          <b-col xl="3" lg="5" class="mt-2 mt-lg-0">
             <label for="input-drop">Chance de drop:</label>
             <b-form-input
               id="input-drop"
@@ -76,14 +88,8 @@
               v-money="masks.rate"
             ></b-form-input>
           </b-col>
-          <b-icon
-            style="position: absolute; top: 45; right: 20; cursor: pointer"
-            icon="trash-fill"
-            aria-hidden="true"
-            @click="box.weapons.splice(index, 1)"
-          ></b-icon>
         </b-row>
-        <b-row class="mt-4">
+        <b-row class="mt-5 mt-lg-4">
           <b-col>
             <label for="input-image">Imagem:</label>
             <b-form-file
@@ -137,6 +143,12 @@ import "vue-search-select/dist/VueSearchSelect.css";
 
 export default {
   components: { ModelSelect },
+  props: {
+    param: {
+      type: String,
+      default: "",
+    },
+  },
   data() {
     return {
       loading: false,

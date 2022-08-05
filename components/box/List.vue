@@ -1,5 +1,5 @@
 <template>
-  <div class="page-weapons-list">
+  <div class="page-box-list">
     <b-modal
       ref="my-modal"
       hide-footer
@@ -22,7 +22,7 @@
         </center>
       </div>
     </b-modal>
-    <div class="box">Lista de armas</div>
+    <div class="box">Lista de caixas</div>
     <div class="box mt-3 box-full">
       <b-input
         v-model="filter"
@@ -49,8 +49,8 @@
         </template>
         <template #cell(actions)="data">
           <b-button-group size="sm" style="gap: 20px">
-            <b-button @click="editWeapon(data.item)">Editar</b-button>
-            <b-button @click="deleteWeapon(data.item)">Excluir</b-button>
+            <b-button @click="editBox(data.item)">Editar</b-button>
+            <b-button @click="deleteBox(data.item)">Excluir</b-button>
           </b-button-group>
         </template>
       </b-table>
@@ -93,10 +93,10 @@ export default {
         });
       }
     },
-    editWeapon(item) {
-      this.$router.push(`/box/edit?box=${item._id}`);
+    editBox(item) {
+      this.$emit(`page`, { page: "/box/edit", param: item._id });
     },
-    deleteWeapon(item) {
+    deleteBox(item) {
       this.deleting = item;
       this.$refs["my-modal"].show();
     },

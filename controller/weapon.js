@@ -1,9 +1,9 @@
 class Weapon {
   async loadData() {
-    if (this.$route.query.weapon) {
+    if (this.param !== '') {
       try {
         const response = await this.$axios.get(
-          `/weapon/find/${this.$route.query.weapon}`
+          `/weapon/find/${this.param}`
         );
         const weapon = response.data.data;
         this.editingId = weapon._id;
@@ -11,7 +11,7 @@ class Weapon {
         this.weapon.item_type = weapon.item_type;
         this.weapon.item_rarity = weapon.item_rarity;
         Object.keys(weapon.item_price).forEach((key) => {
-          weapon.item_price[key] = `R$ ${weapon.item_price[key]}`;
+          weapon.item_price[key] = `R$ ${weapon.item_price[key].toFixed(2)}`;
         });
         this.weapon.item_price = weapon.item_price;
         this.weapon.image = "same";
@@ -40,7 +40,7 @@ class Weapon {
             position: "top-right",
             duration: 4000,
           });
-          this.$router.push("/weapons/list");
+          this.$emit("page", {page: "/weapon/list"})
         })
         .catch((err) => {
           this.loading = false;
@@ -61,7 +61,7 @@ class Weapon {
             position: "top-right",
             duration: 4000,
           });
-          this.$router.push("/weapons/list");
+          this.$emit("page", {page: "/weapon/list"})
         })
         .catch((err) => {
           this.loading = false;

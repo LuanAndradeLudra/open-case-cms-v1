@@ -88,7 +88,7 @@ export default {
       }
     },
     editWeapon(item) {
-      this.$router.push(`/weapons/edit?weapon=${item._id}`);
+      this.$emit(`page`, { page: "/weapon/edit", param: item._id });
     },
     deleteWeapon(item) {
       this.deleting = item;

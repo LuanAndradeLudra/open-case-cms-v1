@@ -1,10 +1,10 @@
 const validator = require("~/helpers/validator");
 class Box {
   async loadData() {
-    if (this.$route.query.box) {
+    if (this.param !== '') {
       try {
         const response = await this.$axios.get(
-          `/box/find/${this.$route.query.box}`
+          `/box/find/${this.param}`
         );
         const box = response.data.data;
         this.editingId = box._id;
@@ -78,7 +78,7 @@ class Box {
             position: "top-right",
             duration: 4000,
           });
-          this.$router.push("/box/list");
+          this.$emit("page", {page: '/box/list'})
         })
         .catch((err) => {
           this.loading = false;
@@ -100,7 +100,7 @@ class Box {
             position: "top-right",
             duration: 4000,
           });
-          this.$router.push("/box/list");
+          this.$emit("page", {page: '/box/list'})
         })
         .catch((err) => {
           this.loading = false;

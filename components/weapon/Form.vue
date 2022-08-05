@@ -1,10 +1,12 @@
 <template>
   <div class="page-weapons-create">
     <b-overlay :show="overlay" rounded="sm" variant="transparent" blur="1px">
-      <div class="box">Criar nova arma</div>
+      <div class="box">
+        <span v-if="!param">Criar</span> <span v-else>Editar</span> nova arma
+      </div>
       <div class="box mt-3">
         <b-row>
-          <b-col cols="6">
+          <b-col xl="6" lg="12">
             <label for="input-name">Nome:</label>
             <b-form-input
               id="input-name"
@@ -13,14 +15,14 @@
               placeholder="Digite o nome"
             ></b-form-input>
           </b-col>
-          <b-col cols="3">
+          <b-col xl="3" lg="6" class="mt-3 mt-xl-0">
             <label for="input-type">Tipo:</label>
             <model-select
               :options="options.item_type"
               v-model="weapon.item_type"
             />
           </b-col>
-          <b-col cols="3">
+          <b-col xl="3" lg="6" class="mt-3 mt-xl-0">
             <label for="input-rarity">Raridade:</label>
             <model-select
               :options="options.item_rarity"
@@ -28,8 +30,8 @@
             />
           </b-col>
         </b-row>
-        <b-row class="mt-4">
-          <b-col cols="3">
+        <b-row class="mt-xl-4 mt-0">
+          <b-col xl="3" lg="6" class="mt-3 mt-xl-0">
             <label for="input-fn">Factory New (Preço):</label>
             <b-form-input
               id="input-fn"
@@ -39,7 +41,7 @@
               v-money="masks.price"
             ></b-form-input>
           </b-col>
-          <b-col cols="3">
+          <b-col xl="3" lg="6" class="mt-3 mt-xl-0">
             <label for="input-fnst">Factory New StatTrak (Preço):</label>
             <b-form-input
               id="input-fnst"
@@ -49,7 +51,7 @@
               v-money="masks.price"
             ></b-form-input>
           </b-col>
-          <b-col cols="3">
+          <b-col xl="3" lg="6" class="mt-3 mt-xl-0">
             <label for="input-mw">Minimal Wear (Preço):</label>
             <b-form-input
               id="input-mw"
@@ -59,7 +61,7 @@
               v-money="masks.price"
             ></b-form-input>
           </b-col>
-          <b-col cols="3">
+          <b-col xl="3" lg="6" class="mt-3 mt-xl-0">
             <label for="input-mwst">Minimal Wear StatTrak (Preço):</label>
             <b-form-input
               id="input-mwst"
@@ -70,8 +72,8 @@
             ></b-form-input>
           </b-col>
         </b-row>
-        <b-row class="mt-4">
-          <b-col cols="3">
+        <b-row class="mt-xl-4 mt-0">
+          <b-col xl="3" lg="6" class="mt-3 mt-xl-0">
             <label for="input-ft">Field Tested (Preço):</label>
             <b-form-input
               id="input-ft"
@@ -81,7 +83,7 @@
               v-money="masks.price"
             ></b-form-input>
           </b-col>
-          <b-col cols="3">
+          <b-col xl="3" lg="6" class="mt-3 mt-xl-0">
             <label for="input-ftst">Field Tested StatTrak (Preço):</label>
             <b-form-input
               id="input-ftst"
@@ -91,7 +93,7 @@
               v-money="masks.price"
             ></b-form-input>
           </b-col>
-          <b-col cols="3">
+          <b-col xl="3" lg="6" class="mt-3 mt-xl-0">
             <label for="input-ww">Well Worn (Preço):</label>
             <b-form-input
               id="input-ww"
@@ -101,7 +103,7 @@
               v-money="masks.price"
             ></b-form-input>
           </b-col>
-          <b-col cols="3">
+          <b-col xl="3" lg="6" class="mt-3 mt-xl-0">
             <label for="input-wwst">Well Worn StatTrak (Preço):</label>
             <b-form-input
               id="input-wwst"
@@ -112,8 +114,8 @@
             ></b-form-input>
           </b-col>
         </b-row>
-        <b-row class="mt-4">
-          <b-col cols="3">
+        <b-row class="mt-xl-4 mt-0">
+          <b-col xl="3" lg="6" class="mt-3 mt-xl-0">
             <label for="input-bs">Battle Scarred (Preço):</label>
             <b-form-input
               id="input-bs"
@@ -123,7 +125,7 @@
               v-money="masks.price"
             ></b-form-input>
           </b-col>
-          <b-col cols="3">
+          <b-col xl="3" lg="6" class="mt-3 mt-xl-0">
             <label for="input-bsst">Battle Scarred StatTrak (Preço):</label>
             <b-form-input
               id="input-bsst"
@@ -135,7 +137,7 @@
           </b-col>
         </b-row>
         <b-row class="mt-4">
-          <b-col>
+          <b-col lg="6" order-lg="0" order="2">
             <label for="input-image">Imagem:</label>
             <b-form-file
               id="input-image"
@@ -193,6 +195,12 @@ import "vue-search-select/dist/VueSearchSelect.css";
 
 export default {
   components: { ModelSelect },
+  props: {
+    param: {
+      type: String,
+      default: "",
+    },
+  },
   data() {
     return {
       overlay: true,

@@ -5,7 +5,6 @@
   margin: 12px 0;
 }
 
-
 .box {
   padding: 24px 12px 16px 12px;
   background-color: #27293d;
@@ -13,9 +12,12 @@
   height: 100%;
 }
 
-.box-full{
-
+.box-full {
   min-height: 50vh;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
 }
 
 .image-exiber {
@@ -46,7 +48,7 @@
   transform: scale(1.01);
   background-color: #1e1e2eb6;
 }
-.custom-file-input ~ .custom-file-label[data-browse]::after{
+.custom-file-input ~ .custom-file-label[data-browse]::after {
   background-color: #1e1e2eb6 !important;
   color: rgb(255, 255, 255) !important;
   cursor: pointer;
@@ -61,7 +63,7 @@ input {
 input::placeholder {
   color: rgba(255, 255, 255, 0.568) !important;
 }
-.custom-file-label{
+.custom-file-label {
   color: rgba(255, 255, 255, 0.568) !important;
   box-shadow: none !important;
   border: none !important;
