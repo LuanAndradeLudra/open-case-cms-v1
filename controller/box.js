@@ -10,6 +10,7 @@ class Box {
         this.editingId = box._id;
         this.box.name = box.name;
         this.box.price = `R$ ${box.price.toFixed(2)}`;
+        this.box.category = box.category !== null ? box.category : ''
         if (box.discount) this.box.discount = `${box.discount} %`;
         this.box.image = "same";
         box.weapons.forEach((weaponItem) => {
@@ -48,6 +49,22 @@ class Box {
     }
   }
 
+  async loadCategories() {
+    try {
+      const response = await this.$axios.get("/categories/list");
+      const categories = response.data.data;
+      categories.forEach((category) => {
+        this.categories.push({
+          value: category._id,
+          text: `${category.name}`,
+        });
+      });
+      this.overlay = false;
+    } catch (e) {
+      this.errorToast("Houve um erro ao carregar a lista de categorias");
+    }
+  }
+
   async create() {
     if (this.validate()) {
       this.loading = true;
@@ -56,7 +73,7 @@ class Box {
         .post("box/create", formData)
         .then(() => {
           this.$toast.open({
-            message: "Nova boa criada com sucesso!",
+            message: "Nova box criada com sucesso!",
             type: "success",
             position: "top-right",
             duration: 4000,
@@ -99,6 +116,7 @@ class Box {
     formData.append("price", this.box.price);
     if (validator.isNotEmpty(validator.cleanRate(this.box.discount)))
       formData.append("discount", this.box.discount);
+      if (this.box.category !== '') formData.append("category", this.box.category);
     formData.append("weapons", JSON.stringify(this.box.weapons));
     if (this.box.image !== "same") formData.append("image", this.box.image);
     return formData;
@@ -184,4 +202,5 @@ module.exports = {
   createPayload: box.createPayload,
   loadData: box.loadData,
   update: box.update,
+  loadCategories: box.loadCategories
 };

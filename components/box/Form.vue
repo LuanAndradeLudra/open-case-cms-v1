@@ -34,6 +34,14 @@
             ></b-form-input>
           </b-col>
         </b-row>
+        <b-col class="p-0 mt-3">
+          <label for="input-collection">Coleção:</label>
+          <model-select
+            id="input-collection"
+            v-model="box.category"
+            :options="categories"
+          />
+        </b-col>
         <div class="d-flex align-items-center justify-content-between mt-4">
           <span
             >Quantidade de chance disponível {{ drop_rate_box_total }} %</span
@@ -134,6 +142,12 @@ export default {
       loading: false,
       overlay: true,
       weapons: [],
+      categories: [
+        {
+          value: "",
+          text: "Sem coleção",
+        },
+      ],
       drop_rate_box_total: 100,
       imageUrl: "",
       editingId: "",
@@ -141,6 +155,7 @@ export default {
         name: "",
         price: "",
         discount: "",
+        category: "",
         image: "",
         weapons: [],
       },
@@ -158,6 +173,7 @@ export default {
   },
   created() {
     this.loadWeapons();
+    this.loadCategories();
     this.loadData();
   },
   computed: {

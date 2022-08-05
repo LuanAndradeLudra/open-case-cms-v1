@@ -21,7 +21,7 @@
           ><b-icon icon="app-indicator" aria-hidden="true"></b-icon></span
         >WEAPONS<b-icon icon="caret-down-fill" aria-hidden="true"></b-icon>
       </li>
-      <b-collapse id="collapse-weapons" class="mt-2 collapsed">
+      <b-collapse accordion="collapse-accordion" id="collapse-weapons" class="mt-2 collapsed">
         <NuxtLink to="/weapons/create">
           <li>
             <span class="h5"
@@ -42,7 +42,7 @@
           ><b-icon icon="app-indicator" aria-hidden="true"></b-icon></span
         >CAIXAS<b-icon icon="caret-down-fill" aria-hidden="true"></b-icon>
       </li>
-      <b-collapse id="collapse-box" class="mt-2 collapsed">
+      <b-collapse accordion="collapse-accordion" id="collapse-box" class="mt-2 collapsed">
         <NuxtLink to="/box/create">
           <li>
             <span class="h5"
