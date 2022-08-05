@@ -1,11 +1,12 @@
 class Validator {
   isLengthLessOrEqual(value, length) {
     if (value === "") return null;
-    else if (value.length <= length) return false;
+    else if (value.length < length) return false;
     else return true;
   }
   isNotEmpty(value) {
-    if (value === "" || value === null || value === undefined || value === 0) return null;
+    if (value === "" || value === null || value === undefined || value === 0)
+      return null;
     else return true;
   }
   isPrice(value) {
@@ -17,21 +18,29 @@ class Validator {
   isRate(value) {
     if (this.cleanRate(value) === 0.0 || isNaN(this.cleanRate(value)))
       return null;
-    else if (this.cleanRate(value) <= 0 || this.cleanRate(value) > 100) return false;
+    else if (this.cleanRate(value) <= 0 || this.cleanRate(value) > 100)
+      return false;
     else return true;
   }
   isDiscount(value) {
     if (this.cleanRate(value) === 0.0 || isNaN(this.cleanPrice(value)))
       return null;
-    else if (this.cleanPrice(value) <= 0 || this.cleanPrice(value) > 99) return false;
+    else if (this.cleanPrice(value) <= 0 || this.cleanPrice(value) > 99)
+      return false;
     else return true;
   }
+
+  isEmail(value) {
+    if (value === "") return null;
+    else return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value);
+  }
+
   cleanRate(value) {
     let cleanValue = value.replaceAll("%", "").replaceAll(" ", "");
     cleanValue = parseFloat(cleanValue);
     return cleanValue;
   }
-  
+
   cleanPrice(value) {
     let cleanValue = value.replaceAll("R$", "");
     cleanValue = parseFloat(cleanValue);

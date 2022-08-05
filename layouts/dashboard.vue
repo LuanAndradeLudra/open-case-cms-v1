@@ -7,6 +7,14 @@
   </div>
 </template>
 
+<script>
+import admin from '~/middleware/admin'
+
+export default {
+  middleware: ["auth", admin],
+};
+</script>
+
 <style lang="scss">
 .layout-default {
   padding: 40px 20px;

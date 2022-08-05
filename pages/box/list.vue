@@ -41,7 +41,7 @@
         foot-clone
         hover
       >
-      <template #cell(price)="data">
+        <template #cell(price)="data">
           <p>R$ {{ data.item.price.toFixed(2) }}</p>
         </template>
         <template #cell(discount)="data">
@@ -60,6 +60,7 @@
 
 <script>
 export default {
+  layout: "dashboard",
   data() {
     return {
       overlay: true,

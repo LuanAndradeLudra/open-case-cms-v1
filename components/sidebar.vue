@@ -44,23 +44,30 @@
       </li>
       <b-collapse id="collapse-box" class="mt-2 collapsed">
         <NuxtLink to="/box/create">
-        <li>
-          <span class="h5"
-            ><b-icon icon="app-indicator" aria-hidden="true"></b-icon></span
-          >CRIAR
-        </li>
+          <li>
+            <span class="h5"
+              ><b-icon icon="app-indicator" aria-hidden="true"></b-icon></span
+            >CRIAR
+          </li>
         </NuxtLink>
         <NuxtLink to="/box/list">
-        <li>
-          <span class="h5"
-            ><b-icon icon="app-indicator" aria-hidden="true"></b-icon></span
-          >Listar
-        </li>
+          <li>
+            <span class="h5"
+              ><b-icon icon="app-indicator" aria-hidden="true"></b-icon></span
+            >Listar
+          </li>
         </NuxtLink>
       </b-collapse>
+      <li @click="$auth.logout()">
+        <span class="h5"
+          ><b-icon icon="app-indicator" aria-hidden="true"></b-icon></span
+        >Sair
+      </li>
     </ul>
   </div>
 </template>
+
+<script></script>
 
 <style lang="scss">
 .sidebar {
