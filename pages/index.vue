@@ -27,7 +27,7 @@
           </template>
         </b-sidebar>
         <div class="side-content" cols="10">
-          <div v-if="page === '/'" class="box">Dashboard</div>
+          <div v-if="page === '/'"><Dashboard /></div>
           <weaponForm
             v-if="page === '/weapon/create' || page === '/weapon/edit'"
             :param="param"
@@ -47,19 +47,20 @@
 </template>
 
 <script>
-import admin from "~/middleware/admin";
+import Dashboard from "~/components/dashboard";
 import boxForm from "~/components/box/Form";
 import boxList from "~/components/box/List";
 import weaponForm from "~/components/weapon/Form";
 import weaponList from "~/components/weapon/List";
 
 export default {
-  middleware: ["auth", admin],
+  middleware: "auth",
   components: {
     boxForm,
     boxList,
     weaponForm,
     weaponList,
+    Dashboard,
   },
   data() {
     return {

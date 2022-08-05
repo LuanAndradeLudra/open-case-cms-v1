@@ -67,10 +67,10 @@ export default {
         },
         endpoints: {
           login: {
-            url: '/auth/auth',
+            url: '/authadmin/auth',
             method: 'post',
           },
-          user: { url: '/auth/me', method: 'get' },
+          user: { url: '/authadmin/me', method: 'get' },
           logout: { url: '/auth/logout', method: 'get' },
         },
       },

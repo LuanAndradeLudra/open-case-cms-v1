@@ -1,5 +1,5 @@
 <template>
-  <div class="page-weapons-create">
+  <div class="page-box-create">
     <b-overlay :show="overlay" rounded="sm" variant="transparent" blur="1px">
       <div class="box">
         <span v-if="!param">Criar</span> <span v-else>Editar</span> nova caixa
