@@ -45,14 +45,14 @@ export default {
     "bootstrap-vue/nuxt",
     // https://go.nuxtjs.dev/axios
     "@nuxtjs/axios",
-    '@nuxtjs/auth-next'
+    "@nuxtjs/auth-next",
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
     baseURL: process.env.API_URL,
-    credentials: false
+    credentials: false,
   },
 
   auth: {
@@ -60,25 +60,25 @@ export default {
       local: {
         token: {
           maxAge: false,
-          type: ''
+          type: "",
         },
         user: {
-          property: 'data',
+          property: "data",
         },
         endpoints: {
           login: {
-            url: '/authadmin/auth',
-            method: 'post',
+            url: "/authadmin/auth",
+            method: "post",
           },
-          user: { url: '/authadmin/me', method: 'get' },
-          logout: { url: '/auth/logout', method: 'get' },
+          user: { url: "/authadmin/me", method: "get" },
+          logout: { url: "/auth/logout", method: "get" },
         },
       },
     },
     redirect: {
-      login: '/auth/login',
-      logout: '/auth/login',
-      home: '/'
+      login: "/auth/login",
+      logout: "/auth/login",
+      home: "/",
     },
   },
 
@@ -91,14 +91,12 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    build: {
-      loaders: {
-        sass: {
-          implementation: require("sass"),
-        },
-        scss: {
-          implementation: require("sass"),
-        },
+    loaders: {
+      sass: {
+        implementation: require("sass"),
+      },
+      scss: {
+        implementation: require("sass"),
       },
     },
   },
