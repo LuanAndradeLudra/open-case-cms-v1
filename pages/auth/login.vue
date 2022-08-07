@@ -60,7 +60,7 @@ export default {
           });
         } catch (err) {
           this.loading = false;
-          this.errorToast("Usuário ou senha inválido!");
+          this.errorToast(err.response.data.error ?? "Usuário ou senha inválido!");
         }
       }
     },

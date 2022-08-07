@@ -15,7 +15,7 @@
               placeholder="Digite o nome"
             ></b-form-input>
           </b-col>
-          <b-col xl="3" lg="6">
+          <b-col class="mt-3" xl="3" lg="6">
             <label for="input-price">Preço:</label>
             <b-form-input
               id="input-price"
@@ -25,7 +25,7 @@
               v-money="masks.price"
             ></b-form-input>
           </b-col>
-          <b-col xl="3" lg="6">
+          <b-col class="mt-3" xl="3" lg="6">
             <label for="input-discount">Desconto:</label>
             <b-form-input
               id="input-discount"

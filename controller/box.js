@@ -1,16 +1,14 @@
 const validator = require("~/helpers/validator");
 class Box {
   async loadData() {
-    if (this.param !== '') {
+    if (this.param !== "") {
       try {
-        const response = await this.$axios.get(
-          `/box/find/${this.param}`
-        );
+        const response = await this.$axios.get(`/box/find/${this.param}`);
         const box = response.data.data;
         this.editingId = box._id;
         this.box.name = box.name;
         this.box.price = `R$ ${box.price.toFixed(2)}`;
-        this.box.category = box.category !== null ? box.category : ''
+        if (box.category) this.box.category = box.category._id;
         if (box.discount) this.box.discount = `${box.discount} %`;
         this.box.image = "same";
         box.weapons.forEach((weaponItem) => {
@@ -44,8 +42,11 @@ class Box {
         });
       });
       this.overlay = false;
-    } catch (e) {
-      this.errorToast("Houve um erro ao carregar a lista de weapons");
+    } catch (err) {
+      this.errorToast(
+        err.response.data.error ??
+          "Houve um erro ao carregar a lista de weapons"
+      );
     }
   }
 
@@ -61,7 +62,10 @@ class Box {
       });
       this.overlay = false;
     } catch (e) {
-      this.errorToast("Houve um erro ao carregar a lista de categorias");
+      this.errorToast(
+        err.response.data.error ??
+          "Houve um erro ao carregar a lista de categorias"
+      );
     }
   }
 
@@ -78,11 +82,11 @@ class Box {
             position: "top-right",
             duration: 4000,
           });
-          this.$emit("page", {page: '/box/list'})
+          this.$emit("page", { page: "/box/list" });
         })
         .catch((err) => {
           this.loading = false;
-          this.errorToast(err ?? "Erro ao criar nova box!");
+          this.errorToast(err.response.data.error ?? "Erro ao criar nova box!");
         });
     }
   }
@@ -100,23 +104,23 @@ class Box {
             position: "top-right",
             duration: 4000,
           });
-          this.$emit("page", {page: '/box/list'})
+          this.$emit("page", { page: "/box/list" });
         })
         .catch((err) => {
           this.loading = false;
-          this.errorToast(err ?? "Erro ao atualizar box!");
+          this.errorToast(err.response.data.error ?? "Erro ao atualizar box!");
         });
     }
   }
 
   createPayload() {
     const formData = new FormData();
-    if (this.editingId) formData.append("id", this.editingId);
     formData.append("name", this.box.name);
     formData.append("price", this.box.price);
     if (validator.isNotEmpty(validator.cleanRate(this.box.discount)))
       formData.append("discount", this.box.discount);
-      if (this.box.category !== '') formData.append("category", this.box.category);
+    if (this.box.category !== "")
+      formData.append("category", this.box.category);
     formData.append("weapons", JSON.stringify(this.box.weapons));
     if (this.box.image !== "same") formData.append("image", this.box.image);
     return formData;
@@ -164,6 +168,13 @@ class Box {
       if (error < 5) this.errorToast(`A caixa precisa ter pelo menos 2 itens!`);
     } else {
       this.box.weapons.forEach((item, index) => {
+        const items = this.box.weapons.filter(
+          (weapon) => weapon.weapon === item.weapon
+        );
+        if (items.length > 1) {
+          countError();
+          if (error < 5) this.errorToast(`O item ${index + 1} se repete!`);
+        }
         if (!validator.isNotEmpty(item.weapon)) {
           countError();
           if (error < 5)
@@ -202,5 +213,5 @@ module.exports = {
   createPayload: box.createPayload,
   loadData: box.loadData,
   update: box.update,
-  loadCategories: box.loadCategories
+  loadCategories: box.loadCategories,
 };

@@ -57,6 +57,27 @@
           >Listar
         </li>
       </b-collapse>
+      <li v-b-toggle.collapse-categories>
+        <span class="h5"
+          ><b-icon icon="app-indicator" aria-hidden="true"></b-icon></span
+        >Categorias<b-icon icon="caret-down-fill" aria-hidden="true"></b-icon>
+      </li>
+      <b-collapse
+        accordion="collapse-accordion"
+        id="collapse-categories"
+        class="mt-2 collapsed"
+      >
+        <li @click="changePage('/categories/create')">
+          <span class="h5"
+            ><b-icon icon="app-indicator" aria-hidden="true"></b-icon></span
+          >CRIAR
+        </li>
+        <li @click="changePage('/categories/list')">
+          <span class="h5"
+            ><b-icon icon="app-indicator" aria-hidden="true"></b-icon></span
+          >Listar
+        </li>
+      </b-collapse>
       <li @click="$auth.logout()">
         <span class="h5"
           ><b-icon icon="app-indicator" aria-hidden="true"></b-icon></span

@@ -1,10 +1,8 @@
 class Weapon {
   async loadData() {
-    if (this.param !== '') {
+    if (this.param !== "") {
       try {
-        const response = await this.$axios.get(
-          `/weapon/find/${this.param}`
-        );
+        const response = await this.$axios.get(`/weapon/find/${this.param}`);
         const weapon = response.data.data;
         this.editingId = weapon._id;
         this.weapon.name = weapon.name;
@@ -40,11 +38,13 @@ class Weapon {
             position: "top-right",
             duration: 4000,
           });
-          this.$emit("page", {page: "/weapon/list"})
+          this.$emit("page", { page: "/weapon/list" });
         })
         .catch((err) => {
           this.loading = false;
-          this.errorToast(err ?? "Erro ao criar novo weapon!");
+          this.errorToast(
+            err.response.data.error ?? "Erro ao criar novo weapon!"
+          );
         });
     }
   }
@@ -61,17 +61,18 @@ class Weapon {
             position: "top-right",
             duration: 4000,
           });
-          this.$emit("page", {page: "/weapon/list"})
+          this.$emit("page", { page: "/weapon/list" });
         })
         .catch((err) => {
           this.loading = false;
-          this.errorToast(err ?? "Erro ao atualizar weapon!");
+          this.errorToast(
+            err.response.data.error ?? "Erro ao atualizar weapon!"
+          );
         });
     }
   }
   createPayload() {
     const formData = new FormData();
-    if (this.editingId) formData.append("id", this.editingId);
     formData.append("name", this.weapon.name);
     if (this.weapon.image !== "same")
       formData.append("image", this.weapon.image);
@@ -167,5 +168,5 @@ module.exports = {
   loadData: weapon.loadData,
   update: weapon.update,
   validate: weapon.validate,
-  createPayload: weapon.createPayload
+  createPayload: weapon.createPayload,
 };

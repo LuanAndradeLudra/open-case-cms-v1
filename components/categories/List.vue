@@ -22,7 +22,7 @@
         </center>
       </div>
     </b-modal>
-    <div class="box">Lista de caixas</div>
+    <div class="box">Lista de categorias</div>
     <div class="box mt-3 box-full">
       <b-input
         v-model="filter"
@@ -41,16 +41,13 @@
         foot-clone
         hover
       >
-        <template #cell(price)="data">
-          <p>R$ {{ data.item.price.toFixed(2) }}</p>
-        </template>
-        <template #cell(discount)="data">
-          <p v-if="data.item.discount">{{ data.item.discount }} %</p>
+      <template #cell(boxes)="data">
+          <p>{{data.item.boxes.length}}</p>
         </template>
         <template #cell(actions)="data">
           <b-button-group size="sm" style="gap: 20px">
-            <b-button @click="editBox(data.item)">Editar</b-button>
-            <b-button @click="deleteBox(data.item)">Excluir</b-button>
+            <b-button @click="editCategorie(data.item)">Editar</b-button>
+            <b-button @click="deleteCategorie(data.item)">Excluir</b-button>
           </b-button-group>
         </template>
       </b-table>
@@ -67,9 +64,7 @@ export default {
       filter: "",
       fields: [
         { key: "name", label: "Nome" },
-        { key: "price", label: "Preço" },
-         { key: "category.name", label: "Categoria" },
-        { key: "discount", label: "Desconto" },
+        { key: "boxes", label: "Caixas" },
         { key: "actions", label: "Ações" },
       ],
       items: [],
@@ -82,8 +77,10 @@ export default {
   methods: {
     async loadData() {
       try {
-        const response = await this.$axios.get("box/list");
-        this.items = response.data.data;
+        const response = await this.$axios.get("categories/listbox");
+        
+        const items = response.data.data.filter((item) => item.name !== "Todas")
+        this.items = items;
         this.overlay = false;
       } catch (e) {
         this.$toast.open({
@@ -94,10 +91,10 @@ export default {
         });
       }
     },
-    editBox(item) {
-      this.$emit(`page`, { page: "/box/edit", param: item._id });
+    editCategorie(item) {
+      this.$emit(`page`, { page: "/categories/edit", param: item._id });
     },
-    deleteBox(item) {
+    deleteCategorie(item) {
       this.deleting = item;
       this.$refs["my-modal"].show();
     },
@@ -109,9 +106,9 @@ export default {
       try {
         this.overlay = true;
         this.$refs["my-modal"].hide();
-        await this.$axios.delete(`/box/delete/${this.deleting._id}`);
+        await this.$axios.delete(`/categories/delete/${this.deleting._id}`);
         this.$toast.open({
-          message: "Box deletada com sucesso!",
+          message: "Categoria deletada com sucesso!",
           type: "success",
           position: "top-right",
           duration: 4000,
@@ -120,7 +117,7 @@ export default {
       } catch (e) {
         this.overlay = false;
         this.$toast.open({
-          message: "Erro ao deletar box!",
+          message: "Erro ao deletar categoria!",
           type: "error",
           position: "top-right",
           duration: 4000,

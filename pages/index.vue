@@ -40,6 +40,15 @@
             @page="changePage"
           />
           <boxList v-if="page === '/box/list'" @page="changePage" />
+          <categoriesForm
+            v-if="page === '/categories/create' || page === '/categories/edit'"
+            :param="param"
+            @page="changePage"
+          />
+          <categoriesList
+            v-if="page === '/categories/list'"
+            @page="changePage"
+          />
         </div>
       </div>
     </b-overlay>
@@ -52,6 +61,8 @@ import boxForm from "~/components/box/Form";
 import boxList from "~/components/box/List";
 import weaponForm from "~/components/weapon/Form";
 import weaponList from "~/components/weapon/List";
+import categoriesForm from "~/components/categories/Form";
+import categoriesList from "~/components/categories/List";
 
 export default {
   middleware: "auth",
@@ -61,6 +72,7 @@ export default {
     weaponForm,
     weaponList,
     Dashboard,
+    categoriesList,
   },
   data() {
     return {
