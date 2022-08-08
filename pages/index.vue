@@ -73,6 +73,7 @@ export default {
     weaponList,
     Dashboard,
     categoriesList,
+    categoriesForm
   },
   data() {
     return {
