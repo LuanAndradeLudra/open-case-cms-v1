@@ -12,7 +12,7 @@ class Validator {
   isPrice(value) {
     if (this.cleanPrice(value) === 0.0 || isNaN(this.cleanPrice(value)))
       return null;
-    else if (this.cleanPrice(value) < 0.1) return false;
+    else if (this.cleanPrice(value) < 0.01) return false;
     else return true;
   }
   isRate(value) {
